@@ -24,9 +24,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        return view('home');
+    public function index() {
+        
+        $users = DB::table('users')->select('id','name', 'photo')->get();
+        return view('home', compact('users'));
     }
 
     public function get_my_profile() {

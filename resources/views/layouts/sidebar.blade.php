@@ -16,6 +16,8 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -72,19 +74,22 @@
     </style>
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-   
-    
-        <a href="{{ url('/myprofile') }}">
-            {{ Auth::user()->name }}
-        </a>
-            <a href="{{ route('logout') }}"
-               onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();">
-                {{ __('Logout') }}
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="">
-                @csrf
-            </form> 
+    <div style="text-align: center;">
+        <img src="{{ asset('profile/'. Auth::user()->photo ) }}" alt="profile image" height="90" style="border-radius: 100%;">
+    </div>
+    <a href="{{ url('/myprofile') }}" style="color: deepskyblue;">
+      {{ Auth::user()->name }}
+  </a>
+    <br>
+    <a href="{{ url('/home') }}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+    <a href="{{ route('logout') }}"
+        onclick="event.preventDefault();
+        document.getElementById('logout-form').submit();"><i class="fa fa-sign-out" aria-hidden="true"></i> 
+        {{ __('Logout') }} 
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="">
+      @csrf
+    </form> 
   </div>
   
   <div id="main">
