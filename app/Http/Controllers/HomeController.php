@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 use File;
+use App\Account;
 
 class HomeController extends Controller
 {
@@ -26,13 +27,13 @@ class HomeController extends Controller
      */
     public function index() {
         
-        $users = DB::table('users')->select('id','name', 'photo')->get();
+        $users = Account::get_all_user();
         return view('home', compact('users'));
     }
 
     public function get_my_profile() {
 
-        $profile = DB::table('users')->where('id', Auth::user()->id)->first();
+        $profile = Account::get_my_profile();
         return view('myprofile', compact('profile'));
     }
 
@@ -53,19 +54,41 @@ class HomeController extends Controller
     }
     
     public function update_my_profile(Request $request) {
-        
-        $this->validate($request, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required', 'string', 'min:11', 'unique:users'],
-         ]);
 
+         $user  = DB::table('users')->where('id', Auth::user()->id)->first();
          $data = array();
+         if($user->name != $request->name){
+            $this->validate($request, [
+                'name' => ['required', 'string', 'max:255'],
+             ]);
+         }
+         if($user->email != $request->email){
+            $this->validate($request, [
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+             ]);
+         }
+         if($user->phone != $request->phone){
+            $this->validate($request, [
+                'phone' => ['required', 'string', 'min:11', 'unique:users'],
+             ]);
+         }
          $data['name']=$request->name;
          $data['email']=$request->email;
          $data['phone']=$request->phone;
          DB::table('users')->where('id', Auth::user()->id)->update($data);
          return Redirect()->back();
 
+    }
+
+    public function get_user_profile($id) {
+
+        $profile = Account::get_user_profile($id);
+        return view('userprofile', compact('profile'));
+    }
+
+    public function add_connection($id) {
+
+        Account::add_connection($id);
+        return Redirect()->back();
     }
 }

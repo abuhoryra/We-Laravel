@@ -1,6 +1,30 @@
 @extends('layouts.sidebar')
 @section('content')
 <style>
+    .middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+.card:hover .image {
+  opacity: 0.3;
+}
+
+.card:hover .middle {
+  opacity: 1;
+}
+
+
+.fa-heart{
+
+    color: #cc0066;
+    font-size: 90px; 
+}
     @media only screen and (max-width: 767px) {
         body{
             background: linear-gradient(to top left, #99ccff 0%, #ff3399 100%);
@@ -25,8 +49,11 @@
     
     <div class="card" style="width: 18rem;">
             <img src="{{ asset('profile/'. $user->photo ) }}" class="card-img-top" alt="profile image" height="300" onerror="this.src='{{ asset('images/avatar.png') }}'">
+            <div class="middle">
+                <a class="btnAdd" href="{{url('/addconnection/'. $user->id)}}"><i class="fa fa-heart" aria-hidden="true"></i></a>
+              </div>
             <div class="card-body">
-              <h5 class="card-title">{{$user->name}}</h5>
+              <a href="{{url('/userprofile/'. $user->id)}}"><h5 class="card-title">{{$user->name}}</h5></a>
          
             </div>
           </div>
@@ -35,6 +62,5 @@
 </div>
 </div>  
 </div>
-
 
 @endsection
