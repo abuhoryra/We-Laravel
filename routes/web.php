@@ -26,3 +26,4 @@ Route::post('/profileimage', 'HomeController@profile_image_upload');
 Route::post('/updateprofile', 'HomeController@update_my_profile');
 Route::get('/userprofile/{id}', 'HomeController@get_user_profile');
 Route::get('/addconnection/{id}', 'HomeController@add_connection');
+Route::get('/myconnection', 'HomeController@get_my_connection');

@@ -43,8 +43,12 @@
     }
 </style>
 <div class="container-fluid">
+    @if (count($users) > 0)
      <div class="row" style="margin-left:3%;">     
             <div class="card-deck">
+              
+                  
+              
     @foreach ($users as $user)
     
     <div class="card" style="width: 18rem;">
@@ -59,8 +63,13 @@
           </div>
     
     @endforeach
+  
+  
 </div>
 </div>  
+@else
+<h1 style="text-align:center;">No Data Found</h1>
+@endif
 </div>
 
 @endsection

@@ -88,7 +88,31 @@ class HomeController extends Controller
 
     public function add_connection($id) {
 
-        Account::add_connection($id);
+        
+           
+           Account::add_connection($id);
+          
+        
+       
+            Account::match_connection($id);
+        
+        
         return Redirect()->back();
+    }
+
+    public function get_my_connection() {
+        
+        $data =  DB::table('connection')->select('connection.sender_id', 'connection.receiver_id', 'users.name', 'users.id as uid', 'users.photo')
+                                        ->leftJoin('users', function($join){
+                                            $join->on('users.id','=','connection.sender_id');
+                                            $join->orOn('users.id','=','connection.receiver_id');
+                                        })
+                                       ->where('connection.status', 1)
+                                       ->where ('connection.sender_id', Auth::user()->id)
+                                       ->orWhere ('connection.receiver_id', Auth::user()->id)
+                                       ->groupBy('users.id')
+                                       ->get();
+        return view('myconnection', compact('data'));
+        
     }
 }

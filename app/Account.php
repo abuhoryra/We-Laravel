@@ -51,4 +51,12 @@ class Account extends Model
     );
 
    }
+
+   public static function match_connection($id) {
+
+      DB::table('connection')
+            ->where('receiver_id', Auth::user()->id)
+            ->where('sender_id', $id)
+            ->update(['status' => 1]);
+   }
 }

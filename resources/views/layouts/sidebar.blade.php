@@ -75,12 +75,13 @@
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <div style="text-align: center;">
-        <img src="{{ asset('profile/'. Auth::user()->photo ) }}" alt="profile image" height="90" style="border-radius: 100%;">
+        <img src="{{ asset('profile/'. Auth::user()->photo ) }}" alt="profile image" height="90" onerror="this.src='{{ asset('images/avatar.png') }}'" style="border-radius: 100%;">
     </div>
     <a href="{{ url('/myprofile') }}" style="color: deepskyblue;">
       {{ Auth::user()->name }}
   </a>
     <br>
+    <a href="{{ url('/myconnection') }}"><i class="fa fa-commenting" aria-hidden="true"></i> Connections</a>
     <a href="{{ url('/home') }}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
     <a href="{{ route('logout') }}"
         onclick="event.preventDefault();
