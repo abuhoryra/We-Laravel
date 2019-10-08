@@ -12,6 +12,7 @@ body,html{
 		.chat{
 			margin-top: auto;
 			margin-bottom: auto;
+			
 		}
 		.card{
 			height: 500px;
@@ -232,7 +233,7 @@ body,html{
 
                             @foreach ($data as $row)
                             @if ($row->uid != Auth::user()->id)
-                            <li class="active">
+                            <li class="active onshow"  id="" data-id="{{ $row->uid }}" data-name="{{ $row->name }}" data-image="{{ asset('profile/'. $row->photo ) }}">
                             <div class="d-flex bd-highlight"> 
                                     <div class="img_cont">
                                             <img src="{{ asset('profile/'. $row->photo ) }}" onerror="this.src='{{ asset('images/avatar.png') }}'" class="rounded-circle user_img">
@@ -242,7 +243,8 @@ body,html{
                                             <span> {{ $row->name }} </span>
                                         </div>
                                     </div>
-                                </li>
+								</li>
+			
                             @endif
                          @endforeach
                 </ul>
@@ -250,45 +252,54 @@ body,html{
             <div class="card-footer"></div>
         </div></div>
         <div class="col-md-8 col-xl-6 chat">
-            <div class="card">
+            <div id="" class="card showcard" style="display: none;">
                 <div class="card-header msg_head">
+						<p id="userID" style="display: none;">fd</p>
                     <div class="d-flex bd-highlight">
                         <div class="img_cont">
-                            <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+                            <img  src="" class="rounded-circle user_img userimage" onerror="this.src='{{ asset('images/error.png') }}'">
                             <span class="online_icon"></span>
                         </div>
                         <div class="user_info">
-                            <span>Not Yet</span>
+                            <span id="username">Not Yet</span>
                         </div>
                     </div>
                     
                 </div>
                 <div class="card-body msg_card_body">
                     <div class="d-flex justify-content-start mb-4">
+							
                         <div class="img_cont_msg">
-                            <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+                            <img src="" class="rounded-circle user_img_msg userimage" onerror="this.src='{{ asset('images/error.png') }}'">
                         </div>
-                        <div class="msg_cotainer">
+                        <div class="msg_cotainer" id="show">
                             Hi, how are you samim?
                             <span class="msg_time">8:40 AM, Today</span>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer">
+						<form action="{{url('/sendmessage/')}}" method="POST" id="msgform">
                     <div class="input-group">
+						
+					
+							@csrf
                         <div class="input-group-append">
                             <span class="input-group-text attach_btn"><i class="fa fa-paperclip"></i></span>
                         </div>
-                        <textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
+                        <textarea name="msg" class="form-control type_msg" placeholder="Type your message..."></textarea>
                         <div class="input-group-append">
-                            <span class="input-group-text send_btn"><i class="fa fa-location-arrow"></i></span>
-                        </div>
-                    </div>
+                            <button type="submit" style="background:#00cc66; border: none; border-top-right-radius: 15px; border-bottom-right-radius: 15px;"><span class="input-group-text send_btn"><i class="fa fa-location-arrow"></i></span></button>
+						</div>
+					
+					</div>
+				</form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <script>
 	$(document).ready(function(){
 $('#action_menu_btn').click(function(){
@@ -296,4 +307,90 @@ $('#action_menu_btn').click(function(){
 });
 	});
 </script>
+<script>
+	
+				
+	
+	$(document).ready(function(){
+	  $(".onshow").click(function(){
+		$(".showcard").show();
+		let a = $(this).attr("data-name");
+		 id = $(this).attr("data-id");
+	
+		let image = $(this).attr("data-image");
+		$("#username").html(a);
+		$("#userID").html(id);
+		$(".userimage").attr('src', image);
+		
+
+																		// //var val = $("#userID").text();
+																		// var url = "{{url('/msg/')}}";
+																		// var data = url+'/'+id;
+																		
+																		
+																	
+																		// var response = '';
+																		// $.ajax({
+																		// 	type: "GET",
+																		// 	url: data,
+																		// 	//dataType: 'json',
+																		// 	async: false,
+																		// 	success: function(text) {
+																		// 		response = text;
+																		// 		$("#show").html(response);
+																				
+																		// 	}
+																		// });
+																					
+																			
+        //alert(response);
+	  });
+	  
+	  
+	 
+		
+
+	  $("#msgform").submit(function(event){
+        event.preventDefault();
+		var val = $("#userID").text();
+	
+        var formData = new FormData(this);
+		var url = $(this).attr('action')+'/'+val;
+          $.ajax({
+             url: url,
+             type: 'POST',
+             data: formData,
+             async: false,
+             success: function(data) {
+				$(".type_msg").val('');
+				
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+		// //var val = $("#userID").text();
+		// var url = "{{url('/msg/')}}";
+		// var data = url+'/'+val;
+		
+		
+	
+        // var response = '';
+        // $.ajax({
+        //     type: "GET",
+        //     url: data,
+		// 	//dataType: 'json',
+        //     async: false,
+        //     success: function(text) {
+        //         response = text;
+		// 		$("#show").html(response);
+				
+        //     }
+        // });
+     });
+	});
+	</script>
+
+
+
 @endsection

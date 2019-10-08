@@ -110,9 +110,35 @@ class HomeController extends Controller
                                        ->where('connection.status', 1)
                                        ->where ('connection.sender_id', Auth::user()->id)
                                        ->orWhere ('connection.receiver_id', Auth::user()->id)
+                                       ->where('connection.status', 1)
                                        ->groupBy('users.id')
                                        ->get();
         return view('myconnection', compact('data'));
         
+    }
+
+    public function send_msg(Request $request, $receiver_id) {
+        
+        $msg = $request->input('msg');
+
+        DB::table('message')->insert(
+           ['sender_id' => Auth::user()->id, 
+           'receiver_id' => $receiver_id,
+           'msg' => $msg,
+           'time' => time()]
+       );
+        return Redirect()->back();
+
+    }
+
+    public function get_msg($receiver_id) {
+
+        $data = Account::get_message($receiver_id);
+        
+        foreach($data as $row) {
+            //return response()->json($data);
+            echo '<br>'.$row->msg;
+        }
+
     }
 }

@@ -27,3 +27,5 @@ Route::post('/updateprofile', 'HomeController@update_my_profile');
 Route::get('/userprofile/{id}', 'HomeController@get_user_profile');
 Route::get('/addconnection/{id}', 'HomeController@add_connection');
 Route::get('/myconnection', 'HomeController@get_my_connection');
+Route::post('/sendmessage/{receiver_id}', 'HomeController@send_msg');
+Route::get('/msg/{receiver_id}', 'HomeController@get_msg');

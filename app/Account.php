@@ -59,4 +59,14 @@ class Account extends Model
             ->where('sender_id', $id)
             ->update(['status' => 1]);
    }
+
+   public static function get_message($receiver_id) {
+
+     return DB::table('message')
+                ->where('sender_id', Auth::user()->id)
+                ->where('receiver_id', $receiver_id)
+                ->orWhere('receiver_id', Auth::user()->id)
+                ->orWhere('sender_id', $receiver_id)
+                ->get();
+   }
 }
